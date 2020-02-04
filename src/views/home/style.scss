@@ -1,0 +1,65 @@
+@import '../../style/variable.scss';
+.home{
+    .swipeWrap{
+        
+    }
+    .utilBar{
+        padding-top: 30px;
+        .svg-icon{
+            width: 45px;
+            height: 45px;
+        }
+    }
+    .categoryWrap{
+        margin-top: 40px;
+        padding: 20px;
+        .categoryItem{
+            width: 100%;
+            height: 100px;
+            .categoryLogo{
+                width:100%;
+                height: 100%;
+                img{
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        
+    }
+    .miaosha{
+        padding: 20px;
+        .miaosha-left{
+            .svg-icon{
+                width: 30px;
+                height: 30px;
+                margin-right: 15px;;
+            }
+        }
+        .miaoshaMore{
+            display: flex;
+            flex-direction: row-reverse;
+            .round-btn{
+                background: pink;
+                color: white;
+                padding: 5px 15px;
+            }
+        }
+        .miaoshaItem{
+            .nowPrice{
+                color: $theme;
+                font-weight: bolder;
+            }
+            .oldPrice{
+                color: #cccccc;
+                text-decoration: line-through;
+            }
+        }
+    }
+    .advertise{
+        height: auto
+    }
+    .goodsWrap{
+        padding: 20px;
+    }
+}

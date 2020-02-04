@@ -1,33 +1,26 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <router-view class="Router"></router-view>
+      <router-view />
     </transition>
-    <van-tabbar v-model="active">
-      <van-tabbar-item icon="home-o">首页</van-tabbar-item>
-      <van-tabbar-item icon="search">购物车</van-tabbar-item>
-      <van-tabbar-item icon="friends-o">我的</van-tabbar-item>
+    <van-tabbar v-model="active" route>
+      <van-tabbar-item icon="home-o" to="/">首页</van-tabbar-item>
+      <van-tabbar-item icon="search" to="/shoppingCar">购物车</van-tabbar-item>
+      <van-tabbar-item icon="friends-o" to="/my">我的</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 <script>
-import {Tabbar,TabbarItem} from 'vant'
 export default {
-  components:{
-    vanTabbar: Tabbar,
-    vanTabbarItem: TabbarItem
-  },
-   data() {
+
+  data() {
     return {
       transitionName: 'slideleft',
       active: 0
     }
   },
-  mounted(){
-    console.log(this.$router);
-  },
   watch: {
-    $route() {   // 监听路由变化重新赋值
+    $route() { // 监听路由变化重新赋值
       if (this.$router.isleft) {
         this.transitionName = 'slideleft'
       }
@@ -35,6 +28,9 @@ export default {
         this.transitionName = 'slideright'
       }
     }
+  },
+  mounted() {
+    console.log(this.$router)
   }
 }
 </script>

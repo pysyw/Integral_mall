@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -8,15 +7,17 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: () => import('@/views/home/index.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/shoppingCar',
+    name: 'shoppingCar',
+    component: () => import('@/views/shoppingCar/index.vue')
+  },
+  {
+    path: '/my',
+    name: 'my',
+    component: () => import('@/views/my/index.vue')
   },
   {
     path: '/404',
@@ -30,25 +31,25 @@ const router = new VueRouter({
   routes
 })
 // 需要左方向动画的路由用this.$router.to('****')
-VueRouter.prototype.togo = function (path) {
+VueRouter.prototype.togo = function(path) {
   this.isleft = true
   this.isright = false
   this.push(path)
 }
 // 需要右方向动画的路由用this.$router.goRight('****')
-VueRouter.prototype.goRight = function (path) {
+VueRouter.prototype.goRight = function(path) {
   this.isright = true
   this.isleft = false
   this.push(path)
 }
 // 需要返回按钮动画的路由用this.$router.goBack()，返回上一个路由
-VueRouter.prototype.goBack = function () {
+VueRouter.prototype.goBack = function() {
   this.isright = true
   this.isleft = false
   this.go(-1)
 }
 // 点击浏览器返回按钮执行，此时不需要路由回退
-VueRouter.prototype.togoback = function () {
+VueRouter.prototype.togoback = function() {
   this.isright = true
   this.isleft = false
 }

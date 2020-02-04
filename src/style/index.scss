@@ -1,0 +1,47 @@
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.flex{
+    display: flex;
+}
+.flex-column-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.tabHeight{
+    min-height: calc(100vh - 100px);
+    padding-bottom: 100px;
+}
+.mg-tp-30{
+    margin-top: 30px;
+}
+.mg-tp-20{
+    margin-top: 20px;
+}
+.mg-tp-10{
+    margin-top: 10px;
+}
+.pd-tp-30{
+    padding-top: 30px;;
+}
+.pd-tp-20{
+    padding-top: 20px;;
+}
+.pd-tp-10{
+    padding-top: 10px;;
+}
+.round-btn{
+    border-radius: 50px;
+    padding: 5px;
+}
+
+.img-responsive {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  
+}

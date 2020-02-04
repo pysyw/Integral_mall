@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Dialog,Toast } from 'vant'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -47,19 +47,18 @@ service.interceptors.response.use(
 
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
-      Message({
+      Toast({
         message: res.message || 'Error',
-        type: 'error',
+        type: 'fail',
         duration: 5 * 1000
       })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 500 || res.code === 50014) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
+        Dialog.confirm({
+          title: '通知',
+          message: res.message || 'token国企'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()
@@ -73,9 +72,9 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    Message({
+    Toast({
       message: error.message,
-      type: 'error',
+      type: 'fail',
       duration: 5 * 1000
     })
     return Promise.reject(error)
