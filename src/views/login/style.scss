@@ -1,0 +1,31 @@
+@import '@/style/variable.scss';
+::v-deep .container{
+            min-height: 100vh;
+            background-color: $pink;
+            .logoWrap{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                padding: 1.6rem 0.8rem;
+                .btnWrap{
+                    width: 100%;
+                    margin-top: 60px;
+                    .van-button{
+                        margin-top: 30px;;
+                        width: 100%;
+                        background: white;
+                        color:$theme;
+                        border: 1px solid $theme;
+                    }
+                }
+                .loginBtnWrap{
+                    margin-top: 120px;
+                    width: 100%;
+                    .van-button{
+                        width: 100%;
+                        color: white;
+                        background-color: rgba($theme, .5)
+                    }
+                }
+            }
+        }

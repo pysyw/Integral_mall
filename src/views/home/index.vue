@@ -2,8 +2,8 @@
   <div class="home tabHeight">
     <div class="swipeWrap">
       <van-swipe height="200" class="my-swipe" :autoplay="3000" indicator-color="white">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img v-lazy="image" style="width:100%;height:100%">
+        <van-swipe-item v-for="(item, index) in images" :key="index">
+          <img :src="item.img" style="width:100%;height:100%">
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -157,39 +157,11 @@
     </div>
     <div class="goodsWrap">
       <van-row>
-        <van-col span="6">
-          <div class="flex-column-center">
-            <img src="../../assets/img/2.jpg" class="img-responsive">
-            <p class="goodsName">口红</p>
-            <span>￥108.2</span>
-          </div>
-        </van-col>
-        <van-col span="6">
-          <div class="flex-column-center">
-            <img src="../../assets/img/2.jpg" class="img-responsive">
-            <p class="goodsName">口红</p>
-            <span>￥108.2</span>
-          </div>
-        </van-col>
-        <van-col span="6">
-          <div class="flex-column-center">
-            <img src="../../assets/img/2.jpg" class="img-responsive">
-            <p class="goodsName">口红</p>
-            <span>￥108.2</span>
-          </div>
-        </van-col>
-        <van-col span="6">
-          <div class="flex-column-center">
-            <img src="../../assets/img/2.jpg" class="img-responsive">
-            <p class="goodsName">口红</p>
-            <span>￥108.2</span>
-          </div>
-        </van-col>
-        <van-col span="6">
-          <div class="flex-column-center">
-            <img src="../../assets/img/2.jpg" class="img-responsive">
-            <p class="goodsName">口红</p>
-            <span>￥108.2</span>
+        <van-col v-for="(item, index) in goods" :key="index" span="12">
+          <div class="flex-column-center" @click="goto(item._id)">
+            <img :src="item.picture" class="img-responsive">
+            <p class="goodsName">{{ item.goodsName }}</p>
+            <span>￥{{ item.integral }}</span>
           </div>
         </van-col>
       </van-row>
@@ -200,6 +172,7 @@
 <script>
 // @ is an alias to /src
 import CountDown from '@/components/countdown'
+import { getData } from '@/api/home.js'
 export default {
   name: 'Home',
   components: {
@@ -208,14 +181,27 @@ export default {
   data() {
     return {
       date: 0,
-      images: [
-        'https://img.yzcdn.cn/vant/apple-1.jpg',
-        'https://img.yzcdn.cn/vant/apple-2.jpg'
-      ]
+      images: [],
+      goods: [],
+      priceSpikeGoods: []
     }
   },
   mounted() {
+    this.getPageData()
     this.date = new Date().setHours(24, 0, 0, 0)
+  },
+  methods: {
+    getPageData() {
+      getData().then(res => {
+        const data = res.data
+        this.images = data.swipeArr
+        this.goods = data.goods
+        this.priceSpikeGoods = data.priceSpike
+      })
+    },
+    goto(id) {
+      this.$router.push(`/goodsDetail/${id}`)
+    }
   }
 }
 </script>

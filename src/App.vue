@@ -3,7 +3,7 @@
     <transition :name="transitionName">
       <router-view />
     </transition>
-    <van-tabbar v-model="active" route>
+    <van-tabbar v-if="showTab" v-model="active" route>
       <van-tabbar-item icon="home-o" to="/">首页</van-tabbar-item>
       <van-tabbar-item icon="search" to="/shoppingCar">购物车</van-tabbar-item>
       <van-tabbar-item icon="friends-o" to="/my">我的</van-tabbar-item>
@@ -12,11 +12,15 @@
 </template>
 <script>
 export default {
-
   data() {
     return {
       transitionName: 'slideleft',
       active: 0
+    }
+  },
+  computed: {
+    showTab() {
+      return this.$route.meta.showTab
     }
   },
   watch: {
@@ -28,9 +32,6 @@ export default {
         this.transitionName = 'slideright'
       }
     }
-  },
-  mounted() {
-    console.log(this.$router)
   }
 }
 </script>
@@ -39,7 +40,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 .Router {

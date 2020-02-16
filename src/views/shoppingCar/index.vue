@@ -4,19 +4,13 @@
       <van-checkbox-group ref="checkboxGroup" v-model="select">
         <van-checkbox v-for="i in 4" :key="i" name="a" class="van-hairline--bottom">
           <van-card
-            num="2"
             price="2.00"
             desc="描述信息"
             title="商品标题"
             thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
           >
-            <div slot="tags">
-              <van-tag plain type="danger">标签</van-tag>
-              <van-tag plain type="danger">标签</van-tag>
-            </div>
-            <div slot="footer">
-              <van-button size="mini">按钮</van-button>
-              <van-button size="mini">按钮</van-button>
+            <div slot="num">
+              <van-stepper v-model="value" @click.prevent="change" />
             </div>
           </van-card>
         </van-checkbox>
@@ -41,7 +35,13 @@ export default {
   data() {
     return {
       select: [],
-      checked: ''
+      checked: '',
+      value: 0
+    }
+  },
+  methods: {
+    change() {
+      console.log(1)
     }
   }
 }

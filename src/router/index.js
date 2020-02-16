@@ -5,19 +5,43 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index.vue')
+  },
+  {
     path: '/',
     name: 'home',
-    component: () => import('@/views/home/index.vue')
+    component: () => import('@/views/home/index.vue'),
+    meta: {
+      showTab: true
+    }
+  },
+  {
+    path: '/goodsDetail/:id',
+    name: 'goodsDetail',
+    component: () => import('@/views/goodsDetail/index.vue')
   },
   {
     path: '/shoppingCar',
     name: 'shoppingCar',
-    component: () => import('@/views/shoppingCar/index.vue')
+    component: () => import('@/views/shoppingCar/index.vue'),
+    meta: {
+      showTab: true
+    }
   },
   {
     path: '/my',
     name: 'my',
-    component: () => import('@/views/my/index.vue')
+    component: () => import('@/views/my/index.vue'),
+    meta: {
+      showTab: true
+    }
+  },
+  {
+    path: '/specialOffer',
+    name: 'specialOffer',
+    component: () => import('@/views/specialOffer/index.vue')
   },
   {
     path: '/404',
@@ -28,6 +52,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  scrollBehavior: () => ({ y: 0 }),
   routes
 })
 // 需要左方向动画的路由用this.$router.to('****')

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Dialog,Toast } from 'vant'
+import { Dialog, Toast } from 'vant'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
