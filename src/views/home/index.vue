@@ -37,79 +37,35 @@
     </div>
     <div class="categoryWrap">
       <van-row gutter="20">
-        <van-col span="12">
-          <van-row>
+        <van-col v-for="(item,index) in categoryArr" :key="index" span="12">
+          <!-- <van-row>
             <van-col span="12">
               <div class="categoryItem">
                 <div class="categoryLogo">
-                  <img src="../../assets/img/1.jpg">
+                  <img :src="item.logo">
                 </div>
               </div>
             </van-col>
             <van-col span="12">
               <div class="introWrap ">
-                <span>数码通讯</span>
+                <span>{{ item.categoryName }}</span>
                 <van-button round size="small">点击进入</van-button>
               </div>
             </van-col>
-          </van-row>
-        </van-col>
-        <van-col span="12">
-          <van-row>
-            <van-col span="12">
-              <div class="categoryItem">
-                <div class="categoryLogo">
-                  <img src="../../assets/img/1.jpg">
-                </div>
-              </div>
-            </van-col>
-            <van-col span="12">
-              <div class="introWrap ">
-                <span>数码通讯</span>
-                <van-button round size="small">点击进入</van-button>
-              </div>
-            </van-col>
-          </van-row>
-        </van-col>
-      </van-row>
-      <van-row class="mg-tp-30" gutter="20">
-        <van-col span="12">
-          <van-row>
-            <van-col span="12">
-              <div class="categoryItem">
-                <div class="categoryLogo">
-                  <img src="../../assets/img/1.jpg">
-                </div>
-              </div>
-            </van-col>
-            <van-col span="12">
-              <div class="introWrap ">
-                <span>数码通讯</span>
-                <van-button round size="small">点击进入</van-button>
-              </div>
-            </van-col>
-          </van-row>
-        </van-col>
-        <van-col span="12">
-          <van-row>
-            <van-col span="12">
-              <div class="categoryItem">
-                <div class="categoryLogo">
-                  <img src="../../assets/img/1.jpg">
-                </div>
-              </div>
-            </van-col>
-            <van-col span="12">
-              <div class="introWrap ">
-                <span>数码通讯</span>
-                <van-button round size="small">点击进入</van-button>
-              </div>
-            </van-col>
-          </van-row>
+          </van-row> -->
+          <div class="categoryItem">
+            <div class="categoryLogo">
+              <img :src="item.logo">
+            </div>
+            <div class="introWrap ">
+              <span>{{ item.categoryName }}</span>
+              <van-button round size="small" @click="goto('goodsCategory',item._id)">点击进入</van-button>
+            </div>
+          </div>
         </van-col>
       </van-row>
     </div>
-    <div class="miaosha">
+    <div v-if="priceSpikeGoods.length !== 0" class="miaosha">
       <van-row class="flex-center">
         <van-col span="12">
           <div class="miaosha-left flex">
@@ -128,25 +84,11 @@
       </van-row>
       <div class="miaoshaItem">
         <van-row gutter="10">
-          <van-col span="8">
+          <van-col v-for="(item,index) in priceSpikeGoods" :key="index" span="8">
             <div class="flex-column-center">
-              <img src="../../assets/img/2.jpg" class="img-responsive">
-              <p class="nowPrice">999</p>
-              <p class="oldPrice">1999</p>
-            </div>
-          </van-col>
-          <van-col span="8">
-            <div class="flex-column-center">
-              <img src="../../assets/img/2.jpg" class="img-responsive">
-              <p class="nowPrice">999</p>
-              <p class="oldPrice">1999</p>
-            </div>
-          </van-col>
-          <van-col span="8">
-            <div class="flex-column-center">
-              <img src="../../assets/img/2.jpg" class="img-responsive">
-              <p class="nowPrice">999</p>
-              <p class="oldPrice">1999</p>
+              <img :src="item.picture" class="img-responsive">
+              <p class="nowPrice">{{ item.priceSpike }}</p>
+              <p class="oldPrice">{{ item.integral }}</p>
             </div>
           </van-col>
         </van-row>
@@ -158,7 +100,7 @@
     <div class="goodsWrap">
       <van-row>
         <van-col v-for="(item, index) in goods" :key="index" span="12">
-          <div class="flex-column-center" @click="goto(item._id)">
+          <div class="flex-column-center" @click="goto('goodsDetail', item._id)">
             <img :src="item.picture" class="img-responsive">
             <p class="goodsName">{{ item.goodsName }}</p>
             <span>￥{{ item.integral }}</span>
@@ -183,7 +125,8 @@ export default {
       date: 0,
       images: [],
       goods: [],
-      priceSpikeGoods: []
+      priceSpikeGoods: [],
+      categoryArr: []
     }
   },
   mounted() {
@@ -197,10 +140,11 @@ export default {
         this.images = data.swipeArr
         this.goods = data.goods
         this.priceSpikeGoods = data.priceSpike
+        this.categoryArr = data.category
       })
     },
-    goto(id) {
-      this.$router.push(`/goodsDetail/${id}`)
+    goto(url, id) {
+      this.$router.push(`/${url}/${id}`)
     }
   }
 }

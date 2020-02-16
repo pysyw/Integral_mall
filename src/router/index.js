@@ -23,6 +23,11 @@ const routes = [
     component: () => import('@/views/goodsDetail/index.vue')
   },
   {
+    path: '/goodsCategory/:categoryId',
+    name: 'goodsCategory',
+    component: () => import('@/views/goodsCategory/index.vue')
+  },
+  {
     path: '/shoppingCar',
     name: 'shoppingCar',
     component: () => import('@/views/shoppingCar/index.vue'),
