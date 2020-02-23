@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 const TokenKey = 'token'
-
+const ShoppingCarKey = 'shoppingCar'
 export function getToken() {
   return Cookies.get(TokenKey)
 }
@@ -12,4 +12,15 @@ export function setToken(token) {
 
 export function removeToken() {
   return Cookies.remove(TokenKey)
+}
+
+// 购物车cookies
+export function getShoppingCar() {
+  return Cookies.get(ShoppingCarKey)
+}
+export function setShoppingCar(ShoppingCar) {
+  return Cookies.set(ShoppingCarKey, ShoppingCar)
+}
+export function removeShoppingCar() {
+  return Cookies.remove(ShoppingCarKey)
 }

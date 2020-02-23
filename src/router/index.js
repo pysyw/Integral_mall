@@ -44,6 +44,22 @@ const routes = [
     }
   },
   {
+    path: '/address',
+    name: 'address',
+    component: () => import('@/views/addressList/index.vue'),
+    meta: {
+      showTab: false
+    }
+  },
+  {
+    path: '/editAddress',
+    name: 'editAddress',
+    component: () => import('@/views/editAddress/index.vue'),
+    meta: {
+      showTab: false
+    }
+  },
+  {
     path: '/specialOffer',
     name: 'specialOffer',
     component: () => import('@/views/specialOffer/index.vue')

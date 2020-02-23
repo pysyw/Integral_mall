@@ -58,7 +58,7 @@
       <div class="roundWrap settingWrap mg-tp-30">
         <div>
           <van-cell-group>
-            <van-cell title="手机号" is-link />
+            <van-cell title="收获地址" is-link to="/address" />
             <van-cell title="修改登录密码" is-link />
             <van-cell title="常见问题" is-link />
             <van-cell title="关于我们" is-link />

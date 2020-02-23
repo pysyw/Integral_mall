@@ -2,15 +2,15 @@
   <div class="container">
     <div class="shoppingItem">
       <van-checkbox-group ref="checkboxGroup" v-model="select">
-        <van-checkbox v-for="i in 4" :key="i" name="a" class="van-hairline--bottom">
+        <van-checkbox v-for="item in tableData" :key="item._id" :name="item._id" class="van-hairline--bottom">
           <van-card
-            price="2.00"
-            desc="描述信息"
-            title="商品标题"
-            thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
+            :price="item.skuId.goodsId.integral"
+            :desc="item.skuId.goodsId.goodsDetail"
+            :title="item.skuId.goodsId.goodsName"
+            :thumb="item.skuId.goodsId.picture"
           >
             <div slot="num">
-              <van-stepper v-model="value" @click.prevent="change" />
+              <van-stepper v-model="item.selectedNum" @click.prevent="change" />
             </div>
           </van-card>
         </van-checkbox>
@@ -29,17 +29,34 @@
   </div>
 </template>
 <script>
+import { getShoppingCarList } from '@/api/shoppingCar'
+import store from '@/store'
 export default {
   name: 'ShoppingCar',
   components: {},
   data() {
     return {
       select: [],
+      tableData: [],
       checked: '',
-      value: 0
+      value: 0,
+      params: {}
     }
   },
+  computed: {
+    consumerId() {
+      return store.state.consumerId
+    }
+  },
+  mounted() {
+    this.getLists()
+  },
   methods: {
+    getLists() {
+      getShoppingCarList(this.consumerId).then(res => {
+        this.tableData = res.data
+      })
+    },
     change() {
       console.log(1)
     }
@@ -59,5 +76,11 @@ export default {
 .contaner{
     min-height: calc(100vh - 200px);
     padding-bottom: 200px;
+}
+::v-deep .van-card__bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px
 }
 </style>

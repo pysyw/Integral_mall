@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <nav-bar title="" @onClickLeft="goback" />
+    <nav-bar title="商品详情" @onClickLeft="goback" />
     <div class="goodsImg">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(item, index) in goodsSwipe" :key="index">
@@ -51,7 +51,7 @@
       </van-row>
     </div>
     <van-goods-action>
-      <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
+      <van-goods-action-icon icon="cart-o" text="购物车" :info="shopCarsNumber" />
       <van-goods-action-button type="warning" text="加入购物车" @click="handleBuy" />
       <van-goods-action-button type="danger" text="立即购买" @click="handleBuy" />
     </van-goods-action>
@@ -60,13 +60,15 @@
         <img :src="item" class="img-responsive">
       </div>
     </div>
-    <my-sku ref="sku" />
+    <my-sku ref="sku" :goods-id="pageData._id" />
   </div>
 </template>
 <script>
 import mySku from '@/components/sku/index.vue'
 import NavBar from '@/components/navBar/index.vue'
+import store from '@/store'
 import { getGoodsDetail } from '@/api/goods.js'
+import { getGoodsSuk } from '@/api/sku.js'
 export default {
   name: 'GoodsDetail',
   components: {
@@ -80,46 +82,12 @@ export default {
       pageData: {},
       showSku: false,
       sku: {
-        tree: [
-          {
-            k: '颜色', // skuKeyName：规格类目名称
-            v: [
-              {
-                id: '30349', // skuValueId：规格值 id
-                name: '红色', // skuValueName：规格值名称
-                imgUrl: 'https://dss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/299c55e31d7f50ae4dc85faa90d6f445_121_121.jpg', // 规格类目图片，只有第一个规格类目可以定义图片
-                previewImgUrl: 'https://dss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/299c55e31d7f50ae4dc85faa90d6f445_121_121.jpg' // 用于预览显示的规格类目图片
-              },
-              {
-                id: '1215',
-                name: '蓝色',
-                imgUrl: 'https://dss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/299c55e31d7f50ae4dc85faa90d6f445_121_121.jpg',
-                previewImgUrl: 'https://dss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/299c55e31d7f50ae4dc85faa90d6f445_121_121.jpg'
-              }
-            ],
-            k_s: 's1'// skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
-          }
-        ],
+        tree: [],
         // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-        list: [
-          {
-            id: 2259, // skuId，下单时后端需要
-            price: 100, // 价格（单位分）
-            s1: '30349', // 规格类目 k_s 为 s1 的对应规格值 id
-            stock_num: 110 // 当前 sku 组合对应的库存
-          },
-          {
-            id: 2260,
-            price: 110,
-            discount: 112,
-            s1: '1215',
-            stock_num: 2, // 库存
-            goods_id: 946755
-          }
-        ],
-        price: '1.00', // 默认价格（单位元）
-        stock_num: 227, // 商品总库存
-        collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        list: [],
+        price: 0, // 默认价格（单位元）
+        stock_num: 0, // 商品总库存
+        collection_id: '', // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
         none_sku: false, // 是否无规格商品
         hide_stock: false // 是否隐藏剩余库存
       },
@@ -127,8 +95,12 @@ export default {
     }
   },
   computed: {
+    // 商品的_id
     _id() {
       return this.$route.params.id
+    },
+    shopCarsNumber() {
+      return store.state.shoppingCar.length
     }
   },
   mounted() {
@@ -142,6 +114,7 @@ export default {
       getGoodsDetail(this._id).then(res => {
         const data = res.data
         this.pageData = data
+        console.log(data)
         this.pageData.expressWay = this.pageData.expressWay.split(',').join('/')
         this.imgArr = this.pageData.detailPic.split(',')
         this.goodsSwipe = this.pageData.goodsSwipe.split(',')
@@ -150,7 +123,71 @@ export default {
         this.goods.picture = data.picture
       })
     },
+    getSku() {
+      getGoodsSuk(this._id).then(res => {
+        const data = res.data
+        this.sku.tree = [
+          {
+            k: data.skuKeyName, // skuKeyName：规格类目名称
+            v: [
+              {
+                id: data.skuValueId, // skuValueId：规格值 id
+                name: data.skuValueName, // skuValueName：规格值名称
+                imgUrl: data.imgUrl, // 规格类目图片，只有第一个规格类目可以定义图片
+                previewImgUrl: data.previewImgUrl // 用于预览显示的规格类目图片
+              }
+            ],
+            k_s: 's1'// skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
+          }
+        ]
+        this.sku.list = [
+          {
+            id: data._id, // skuId，下单时后端需要
+            price: data.goodsId.integral * 100, // 价格（单位分）
+            s1: data.skuValueId, // 规格类目 k_s 为 s1 的对应规格值 id
+            stock_num: data.goodsId.quantity // 当前 sku 组合对应的库存
+          }
+        ]
+        this.sku.price = data.goodsId.integral
+        this.sku.stock_num = data.goodsId.quantity // 商品总库存
+        this.sku.collection_id = data._id // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        this.sku.none_sku = data.noneSku // 是否无规格商品
+        this.sku.hide_stock = false // 是否隐藏剩余库存
+        console.log(data.goodsId.integral)
+        // this.sku = {
+        //   tree: [
+        //     {
+        //       k: data.skuKeyName, // skuKeyName：规格类目名称
+        //       v: [
+        //         {
+        //           id: data.skuValueId, // skuValueId：规格值 id
+        //           name: data.skuValueName, // skuValueName：规格值名称
+        //           imgUrl: data.imgUrl, // 规格类目图片，只有第一个规格类目可以定义图片
+        //           previewImgUrl: data.previewImgUrl // 用于预览显示的规格类目图片
+        //         }
+        //       ],
+        //       k_s: 's1'// skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
+        //     }
+        //   ],
+        //   // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+        //   list: [
+        //     {
+        //       id: data._id, // skuId，下单时后端需要
+        //       price: data.goodsId.integral, // 价格（单位分）
+        //       s1: data.skuValueId, // 规格类目 k_s 为 s1 的对应规格值 id
+        //       stock_num: data.goodsId.quantity // 当前 sku 组合对应的库存
+        //     }
+        //   ],
+        //   price: data.goodsId.integral, // 默认价格（单位元）
+        //   stock_num: data.goodsId.quantity, // 商品总库存
+        //   collection_id: 30349, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        //   none_sku: data.noneSku, // 是否无规格商品
+        //   hide_stock: false // 是否隐藏剩余库存
+        // }
+      })
+    },
     handleBuy() {
+      this.getSku()
       this.$refs['sku'].showSuk(this.sku, this.goods)
       this.showSku = true
     }
