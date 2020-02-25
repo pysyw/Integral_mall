@@ -75,7 +75,7 @@ export default {
       })
     },
     onBuyClicked(skuData) {
-      console.log(skuData)
+      this.$router.push(`/order/${skuData.selectedSkuComb.id}/${skuData.selectedNum}`)
     },
     onAddCartClicked(skuData) {
       const skuId = skuData.selectedSkuComb.id

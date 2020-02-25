@@ -51,7 +51,7 @@
       </van-row>
     </div>
     <van-goods-action>
-      <van-goods-action-icon icon="cart-o" text="购物车" :info="shopCarsNumber" />
+      <van-goods-action-icon icon="cart-o" text="购物车" :info="shopCarsNumber" @click="$router.push('/shoppingCar')" />
       <van-goods-action-button type="warning" text="加入购物车" @click="handleBuy" />
       <van-goods-action-button type="danger" text="立即购买" @click="handleBuy" />
     </van-goods-action>

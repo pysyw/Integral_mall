@@ -65,6 +65,11 @@ const routes = [
     component: () => import('@/views/specialOffer/index.vue')
   },
   {
+    path: '/order/:goodsId/:selectedNum',
+    name: 'order',
+    component: () => import('@/views/order/index.vue')
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
