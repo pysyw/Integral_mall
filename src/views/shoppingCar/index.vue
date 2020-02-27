@@ -48,6 +48,7 @@
 <script>
 import { getShoppingCarList } from '@/api/shoppingCar'
 import { orderCar } from '@/api/order'
+import { Toast } from 'vant'
 import store from '@/store'
 export default {
   name: 'ShoppingCar',
@@ -104,7 +105,12 @@ export default {
     // 购物车下单
     handleOrder(data) {
       orderCar(data).then(res => {
-        console.log(res.data)
+        Toast({
+          message: '购买成功',
+          type: 'success',
+          duration: 1000
+        })
+        this.getLists()
       })
     },
     chooseChange(checked, item) {
@@ -139,6 +145,7 @@ export default {
         this.selectedData = data
         const params = data.map(item => {
           return {
+            id: item._id,
             goodsName: item.skuId.goodsId.goodsName,
             category: item.skuId.goodsId.category,
             consumer: this.consumerId,
@@ -151,6 +158,7 @@ export default {
       } else {
         const params = this.selectedData.map(item => {
           return {
+            id: item._id,
             goodsName: item.skuId.goodsId.goodsName,
             category: item.skuId.goodsId.category,
             consumer: this.consumerId,
