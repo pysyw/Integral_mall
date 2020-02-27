@@ -65,7 +65,7 @@ const routes = [
     component: () => import('@/views/specialOffer/index.vue')
   },
   {
-    path: '/order/:goodsId/:selectedNum',
+    path: '/order/:orderId/:selectedNum',
     name: 'order',
     component: () => import('@/views/order/index.vue')
   },

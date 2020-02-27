@@ -19,6 +19,7 @@
 import { Toast } from 'vant'
 import store from '@/store'
 import { addShoppingCar, editShoppingCar } from '@/api/shoppingCar'
+import { addOrder } from '@/api/order'
 export default {
   props: {
     goodsId: {
@@ -42,7 +43,8 @@ export default {
     return {
       show: false,
       sku: {},
-      goods: {}
+      goods: {},
+      orderId: ''
     }
   },
   computed: {
@@ -74,8 +76,20 @@ export default {
         })
       })
     },
+    handleAddOrder(params, skuData) {
+      addOrder(params).then(res => {
+        this.orderId = res.data._id
+        this.$router.push(`/order/${this.orderId}/${skuData.selectedNum}`)
+      })
+    },
     onBuyClicked(skuData) {
-      this.$router.push(`/order/${skuData.selectedSkuComb.id}/${skuData.selectedNum}`)
+      const params = {
+        goodsName: skuData.goodsId,
+        consumer: this.consumerId,
+        sku: skuData.selectedSkuComb.id,
+        amount: skuData.selectedNum
+      }
+      this.handleAddOrder(params, skuData)
     },
     onAddCartClicked(skuData) {
       const skuId = skuData.selectedSkuComb.id

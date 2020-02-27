@@ -8,7 +8,7 @@
             v-model="item.isChecked"
             :value="item.id"
             checked-color="#15C481"
-            @click="chooseChange(item._id, item)"
+            @change="chooseChange(item.isChecked, item)"
           />
           <div class="shopdetail">
             <div class="detailimg">
@@ -37,33 +37,21 @@
       </div>
     </div>
     <van-submit-bar
-      v-if="true"
       :price="sum"
       button-text="提交订单"
+      @submit="handleSubmit"
     >
       <van-checkbox v-model="checkAll" @click="selectAll">全选</van-checkbox>
-      <span slot="tip">
-        你的收货地址不支持同城送, <span>修改地址</span>
-      </span>
     </van-submit-bar>
   </div>
 </template>
 <script>
 import { getShoppingCarList } from '@/api/shoppingCar'
+import { orderCar } from '@/api/order'
 import store from '@/store'
 export default {
   name: 'ShoppingCar',
   components: {},
-  // data() {
-  //   return {
-  //     select: [],
-  //     tableData: [],
-  //     checked: '',
-  //     selected: '',
-  //     value: 0,
-  //     params: {}
-  //   }
-  // },
   data() {
     return {
       tableData: [],
@@ -78,6 +66,9 @@ export default {
   computed: {
     consumerId() {
       return store.state.consumerId
+    },
+    addressId() {
+      return store.state.addressId
     },
     sum() {
       let price = 0
@@ -110,15 +101,18 @@ export default {
         console.log(this.tableData)
       })
     },
-    selectCar(value) {
-      console.log(value)
+    // 购物车下单
+    handleOrder(data) {
+      orderCar(data).then(res => {
+        console.log(res.data)
+      })
     },
-    change() {
-      console.log(1)
-    },
-    chooseChange(id, item) {
-      console.log(id)
-      console.log(item)
+    chooseChange(checked, item) {
+      if (checked) {
+        this.selectedData.push(item)
+      } else {
+        this.selectedData.splice(this.selectedData.findIndex(a => a._id === item._id), 1)
+      }
     },
     onChange(num, index) {
       this.tableData[index].selectedNum = num
@@ -137,6 +131,35 @@ export default {
         checkboxGroup.forEach(item => {
           item.checked = false
         })
+      }
+    },
+    handleSubmit() {
+      if (this.checkAll) {
+        const data = Array.from(this.tableData)
+        this.selectedData = data
+        const params = data.map(item => {
+          return {
+            goodsName: item.skuId.goodsId.goodsName,
+            category: item.skuId.goodsId.category,
+            consumer: this.consumerId,
+            sku: item.skuId._id,
+            addressId: this.addressId,
+            amount: item.selectedNum
+          }
+        })
+        this.handleOrder(params)
+      } else {
+        const params = this.selectedData.map(item => {
+          return {
+            goodsName: item.skuId.goodsId.goodsName,
+            category: item.skuId.goodsId.category,
+            consumer: this.consumerId,
+            sku: item.skuId._id,
+            addressId: this.addressId,
+            amount: item.selectedNum
+          }
+        })
+        this.handleOrder(params)
       }
     }
   }

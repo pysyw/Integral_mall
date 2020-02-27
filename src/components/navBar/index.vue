@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     onClickLeft() {
-      console.log('onClickLeft')
+      this.$router.go(-1)
       this.$emit('onClickLeft')
     },
     onClickRight() {

@@ -61,8 +61,8 @@ export default {
     consumerId() {
       return store.state.consumerId
     },
-    goodsId() {
-      return this.$route.params.goodsId
+    orderId() {
+      return this.$route.params.orderId
     },
     totalPrice() {
       return this.selectedNum * this.goodsPrice
@@ -72,18 +72,17 @@ export default {
     }
   },
   mounted() {
-    console.log(this.goodsId)
     this.getData()
   },
   methods: {
     getData() {
-      const params = { consumerId: this.consumerId, skuId: this.goodsId }
+      const params = { consumerId: this.consumerId, _id: this.orderId }
       getOrderBySkuId(params).then(res => {
         this.tableData = res.data
         this.skuData = res.data.sku.goodsId
         this.goodsPrice = res.data.sku.goodsId.integral
         this.userInfo = res.data.consumer
-        this.address = res.data.addressId.addressDetail
+        this.address = res.data.consumer.address.addressDetail
       })
     },
     onSubmit() {

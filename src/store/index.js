@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     // 用户id
     consumerId: '5e1821fd2309d51284df6dfe',
-    shoppingCar: getShoppingCar() ? JSON.parse(getShoppingCar()) : []
+    shoppingCar: getShoppingCar() ? JSON.parse(getShoppingCar()) : [],
+    addressId: '5e5339764bd19336c484f175'
   },
   mutations: {
     SET_SHOP_CAR(state, data) {

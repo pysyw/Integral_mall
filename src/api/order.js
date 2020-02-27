@@ -15,10 +15,19 @@ export function getOrderBySkuId(params) {
     params
   })
 }
-// 下单
+// 商品详情里下单
 export function order(data) {
   return request({
     url: '/order/handleOrder',
+    method: 'post',
+    data
+  })
+}
+
+// 购物车里下单
+export function orderCar(data) {
+  return request({
+    url: '/order/handleCarOrder',
     method: 'post',
     data
   })
