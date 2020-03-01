@@ -32,3 +32,12 @@ export function orderCar(data) {
     data
   })
 }
+
+// 获取顾客订单列表
+export function getOrderLists(params) {
+  return request({
+    url: '/order/getOrderList',
+    method: 'get',
+    params
+  })
+}

@@ -115,6 +115,7 @@
 // @ is an alias to /src
 import CountDown from '@/components/countdown'
 import { getData } from '@/api/home.js'
+
 export default {
   name: 'Home',
   components: {

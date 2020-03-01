@@ -2,14 +2,15 @@
 ::v-deep .container{
             min-height: 100vh;
             background-color: $pink;
+            display: flex;
             .logoWrap{
                 display: flex;
                 align-items: center;
                 flex-direction: column;
                 padding: 1.6rem 0.8rem;
-                .btnWrap{
+                .formWrap{
                     width: 100%;
-                    margin-top: 60px;
+                    margin-top: 180px;
                     .van-button{
                         margin-top: 30px;;
                         width: 100%;

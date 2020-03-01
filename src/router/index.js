@@ -52,7 +52,7 @@ const routes = [
     }
   },
   {
-    path: '/editAddress',
+    path: '/editAddress/:addressId?',
     name: 'editAddress',
     component: () => import('@/views/editAddress/index.vue'),
     meta: {
@@ -63,6 +63,11 @@ const routes = [
     path: '/specialOffer',
     name: 'specialOffer',
     component: () => import('@/views/specialOffer/index.vue')
+  },
+  {
+    path: '/orderList/:status?',
+    name: 'orderList',
+    component: () => import('@/views/orderList/index.vue')
   },
   {
     path: '/order/:orderId/:selectedNum',

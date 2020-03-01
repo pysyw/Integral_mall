@@ -48,7 +48,7 @@
 <script>
 import { getShoppingCarList } from '@/api/shoppingCar'
 import { orderCar } from '@/api/order'
-import { Toast } from 'vant'
+import { Toast, Dialog } from 'vant'
 import store from '@/store'
 export default {
   name: 'ShoppingCar',
@@ -92,8 +92,20 @@ export default {
       this.checkAll = value
     }
   },
+  beforeMount() {
+    if (!this.consumerId) {
+      Dialog.confirm({
+        title: '提示',
+        message: '请先登录'
+      }).then(() => {
+        this.$router.replace('/login')
+      }).catch(() => {
+        this.$router.replace('/')
+      })
+    }
+  },
   mounted() {
-    this.getLists()
+    this.consumerId && this.getLists()
   },
   methods: {
     getLists() {
@@ -140,6 +152,13 @@ export default {
       }
     },
     handleSubmit() {
+      if (this.selectedData.length === 0) {
+        Toast({
+          type: 'fail',
+          message: '请选择商品'
+        })
+        return
+      }
       if (this.checkAll) {
         const data = Array.from(this.tableData)
         this.selectedData = data

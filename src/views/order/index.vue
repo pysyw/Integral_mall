@@ -32,9 +32,16 @@
       </div>
     </div>
     <van-submit-bar
+      v-if="tableData.status === 0"
       :price="totalPrice * 100"
       button-text="提交订单"
       @submit="onSubmit"
+    />
+    <van-submit-bar
+      v-else
+      disabled
+      :price="totalPrice * 100"
+      button-text="已付款"
     />
   </div>
 </template>
