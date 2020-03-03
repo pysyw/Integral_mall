@@ -100,8 +100,10 @@
     <div class="goodsWrap">
       <van-row>
         <van-col v-for="(item, index) in goods" :key="index" span="12">
-          <div class="flex-column-center" @click="goto('goodsDetail', item._id)">
-            <img :src="item.picture" class="img-responsive">
+          <div class="flex-column-center goodsItem" @click="goto('goodsDetail', item._id)">
+            <div class="goodsPicWrap">
+              <img :src="item.picture" class="img-responsive">
+            </div>
             <p class="goodsName">{{ item.goodsName }}</p>
             <span>￥{{ item.integral }}</span>
           </div>

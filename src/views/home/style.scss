@@ -66,5 +66,11 @@
     }
     .goodsWrap{
         padding: 20px;
+        .goodsItem{
+            padding: 10px;
+            .goodsPicWrap {
+                max-width: 200px;
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@
     </div>
     <div class="container">
       <p class="goodsName">{{ pageData.goodsName }}</p>
-      <p class="desc">{{ pageData.goodsDetail }}}</p>
+      <p class="desc">{{ pageData.goodsDetail }}</p>
       <div class="goodsInfoWrap">
         <div v-if="pageData.isPriceSpike === 1" class="price">
           <span class="nowPrice">￥{{ pageData.priceSpike }}</span>
@@ -24,25 +24,19 @@
         </div>
       </div>
       <van-row class="mg-tp-30">
-        <van-col span="6">
-          <div class="flex-column-center">
-            <svg-icon icon-class="test" />
-            销量{{ pageData.hasSold }}
-          </div>
-        </van-col>
-        <van-col span="6">
+        <van-col span="8">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
             {{ pageData.expressWay }}快递
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="8">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
             快递费{{ pageData.expressCost }}元
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="8">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
             72小时内发货

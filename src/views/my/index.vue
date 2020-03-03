@@ -109,7 +109,7 @@ export default {
     }
   },
   mounted() {
-    if (this.token) {
+    if (this.token && this.consumerId) {
       this.getConsumerInfo()
     }
   },
