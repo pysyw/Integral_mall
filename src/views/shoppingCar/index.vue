@@ -3,31 +3,46 @@
     <div class="cartList">
       <ul v-if="tableData.length > 0">
         <li v-for="(item, index) in tableData" :key="index">
-          <van-checkbox
-            ref="checkboxGroup"
-            v-model="item.isChecked"
-            :value="item.id"
-            checked-color="#15C481"
-            @change="chooseChange(item.isChecked, item)"
-          />
-          <div class="shopdetail">
-            <div class="detailimg">
-              <img :src="item.skuId.goodsId.picture">
-            </div>
-            <div class="detailtext">
-              <div class="shoptitle van-multi-ellipsis--l2">
-                {{ item.skuId.goodsId.goodsName }}
-              </div>
-              <div class="shoppricenum">
-                <p class="shopprice">
-                  ¥{{ item.skuId.goodsId.integral }}
-                </p>
-                <div class="shopnum">
-                  <van-stepper v-model="item.selectedNum" max="9" @change="onChange(item.selectedNum, index)" />
+          <van-swipe-cell>
+            <div style="display: flex">
+              <van-checkbox
+                ref="checkboxGroup"
+                v-model="item.isChecked"
+                :value="item.id"
+                checked-color="#15C481"
+                @change="chooseChange(item.isChecked, item)"
+              />
+              <div class="shopdetail">
+                <div class="detailimg">
+                  <img :src="item.skuId.goodsId.picture">
+                </div>
+                <div class="detailtext">
+                  <div class="shoptitle van-multi-ellipsis--l2">
+                    {{ item.skuId.goodsId.goodsName }}
+                  </div>
+                  <div class="shoppricenum">
+                    <p class="shopprice">
+                      ¥{{ item.skuId.goodsId.integral }}
+                    </p>
+                    <div class="shopnum">
+                      <van-stepper v-model="item.selectedNum" max="9" @change="onChange(item.selectedNum, index)" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <template slot="right">
+              <div style="margin-left:10px;height:100%">
+                <van-button
+                  square
+                  text="删除"
+                  type="danger"
+                  style="height:100%"
+                  @click="handleDeleteCar(item)"
+                />
+              </div>
+            </template>
+          </van-swipe-cell>
         </li>
       </ul>
       <div v-else class="nohaveshop">
@@ -37,6 +52,7 @@
       </div>
     </div>
     <van-submit-bar
+      v-if="tableData.length !== 0"
       :price="sum"
       button-text="提交订单"
       @submit="handleSubmit"
@@ -46,7 +62,7 @@
   </div>
 </template>
 <script>
-import { getShoppingCarList } from '@/api/shoppingCar'
+import { getShoppingCarList, removeShoppingCar } from '@/api/shoppingCar'
 import { orderCar } from '@/api/order'
 import { Toast, Dialog } from 'vant'
 import store from '@/store'
@@ -188,6 +204,13 @@ export default {
         })
         this.handleOrder(params)
       }
+    },
+    // 删除购物车
+    handleDeleteCar(data) {
+      removeShoppingCar(data._id).then(res => {
+        this.$store.commit('REMOVE_SHOP_CAR', data.skuId._id)
+        this.getLists()
+      })
     }
   }
 }

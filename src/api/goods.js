@@ -2,7 +2,7 @@ import request from '@/utils/request.js'
 
 export function getGoodsDetail(id) {
   return request({
-    url: `/goods/getGoodsDetail/${id}`,
+    url: `/goods/getGoodsDetail?id=${id}`,
     method: 'get'
   })
 }

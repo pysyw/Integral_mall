@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-import { getShoppingCar, setShoppingCar, setToken, getToken, removeToken, getConsumerId, setConsumerId, removeConsumerId } from '@/utils/auth.js'
+import { getShoppingCar, setShoppingCar, removeShoppingCar, setToken, getToken, removeToken, getConsumerId, setConsumerId, removeConsumerId } from '@/utils/auth.js'
 import { login } from '@/api/user'
 export default new Vuex.Store({
   state: {
@@ -22,6 +22,15 @@ export default new Vuex.Store({
         state.shoppingCar.push(data)
         setShoppingCar(state.shoppingCar)
       }
+    },
+    ADD_SHOP_CAR(state, data) {
+      state.shoppingCar = data
+      setShoppingCar(state.shoppingCar)
+    },
+    REMOVE_SHOP_CAR(state, data) {
+      const index = state.shoppingCar.indexOf(data)
+      state.shoppingCar.splice(index, 1)
+      setShoppingCar(state.shoppingCar)
     },
     SET_USERId(state, data) {
       state.consumerId = data
@@ -49,6 +58,7 @@ export default new Vuex.Store({
             setConsumerId(result.data._id)
             context.commit('SET_USERINFO', result.data)
             context.commit('SET_TOKEN', result.token)
+            context.commit('ADD_SHOP_CAR', result.shoppingCar)
             resolve(result)
           }
         }).catch(err => {
@@ -63,6 +73,14 @@ export default new Vuex.Store({
         removeToken()
         removeConsumerId()
         context.commit('SET_USERINFO', '')
+        removeShoppingCar()
+        resolve()
+      })
+    },
+    resetToken({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_TOKEN', '')
+        removeToken()
         resolve()
       })
     }
