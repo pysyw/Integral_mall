@@ -75,6 +75,11 @@ const routes = [
     component: () => import('@/views/order/index.vue')
   },
   {
+    path: '/order/shopCar',
+    name: 'order',
+    component: () => import('@/views/order/shopCarOrder.vue')
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true

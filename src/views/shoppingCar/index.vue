@@ -181,28 +181,30 @@ export default {
         const params = data.map(item => {
           return {
             id: item._id,
-            goodsName: item.skuId.goodsId.goodsName,
-            category: item.skuId.goodsId.category,
-            consumer: this.consumerId,
-            sku: item.skuId._id,
-            addressId: this.addressId,
             amount: item.selectedNum
           }
         })
-        this.handleOrder(params)
+        this.$router.push({
+          path: '/order/shopCar',
+          query: {
+            data: params
+          }
+        })
+        // this.handleOrder(params)
       } else {
         const params = this.selectedData.map(item => {
           return {
             id: item._id,
-            goodsName: item.skuId.goodsId.goodsName,
-            category: item.skuId.goodsId.category,
-            consumer: this.consumerId,
-            sku: item.skuId._id,
-            addressId: this.addressId,
             amount: item.selectedNum
           }
         })
-        this.handleOrder(params)
+        // this.handleOrder(params)
+        this.$router.push({
+          path: '/order/shopCar',
+          query: {
+            data: params
+          }
+        })
       }
     },
     // 删除购物车

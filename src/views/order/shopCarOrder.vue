@@ -9,47 +9,42 @@
         <svg-icon icon-class="test" />
       </div>
       <div class="descWrap">
-        <div class="info">{{ address.name }} <span class="phone mg-left-20">{{ address.phoneNumber }}</span></div>
+        <div class="info">{{ userInfo.name }} <span class="phone mg-left-20">{{ userInfo.phoneNumber }}</span></div>
         <div class="detail">
-          {{ address.addressDetail }}
+          {{ userInfo.addressDetail }}
         </div>
       </div>
     </div>
     <div class="goddsWrap mg-tp-20">
-      <van-card
-        :desc="skuData.goodsDetail"
-        :title="skuData.goodsName"
-        :price="skuData.integral"
-        :thumb="skuData.picture"
-      >
-        <div slot="num">
-          x{{ amount }}
+      <div v-for="(item, index) in tableData" :key="index">
+        <van-card
+          :desc="item.skuId.goodsId.goodsDetail"
+          :title="item.skuId.goodsId.goodsName"
+          :price="item.skuId.goodsId.integral"
+          :thumb="item.skuId.goodsId.picture"
+        >
+          <div slot="num">
+            x{{ queryList[index].amount }}
+          </div>
+        </van-card>
+        <div class="priceWrap">
+          <span>实付款（含运费）</span>
+          <span>￥{{ countPrice(queryList[index].amount ,item.skuId.goodsId.integral) }}</span>
         </div>
-      </van-card>
-      <div class="priceWrap">
-        <span>实付款（含运费）</span>
-        <span>￥{{ totalPrice }}</span>
       </div>
     </div>
     <van-submit-bar
-      v-if="tableData.status === 0"
       :price="totalPrice * 100"
       button-text="提交订单"
-      @submit="onSubmit"
-    />
-    <van-submit-bar
-      v-else
-      disabled
-      :price="totalPrice * 100"
-      button-text="已付款"
+      @submit="handleOnSubmit"
     />
   </div>
 </template>
 <script>
 import { Toast } from 'vant'
 import navBar from '@/components/navBar'
-import store from '@/store'
-import { getOrderBySkuId, order } from '@/api/order'
+import { getOrderByShopCar, orderCar } from '@/api/order'
+import { getList } from '@/api/address'
 export default {
   name: 'Order',
   components: {
@@ -57,59 +52,79 @@ export default {
   },
   data() {
     return {
+      queryList: [],
       skuData: {},
-      goodsPrice: '',
       userInfo: {},
       address: '',
-      tableData: {},
+      tableData: [],
       amount: 0
     }
   },
   computed: {
-    consumerId() {
-      return store.state.consumerId
-    },
-    orderId() {
-      return this.$route.params.orderId
+    goodsPriceArr() {
+      return this.tableData.map(item => {
+        return item.skuId.goodsId.integral
+      })
     },
     totalPrice() {
-      return this.amount * this.goodsPrice
-    },
-    selectedNum() {
-      return this.$route.params.selectedNum
+      const amountArr = this.queryList.map(item => {
+        return item.amount
+      })
+      let result = 0
+      amountArr.forEach((item, index) => {
+        result += this.goodsPriceArr[index] * item
+      })
+      return result
     }
   },
   mounted() {
+    this.queryList = this.$route.query.data
     this.getData()
+    this.getRevecer()
   },
   methods: {
     getData() {
-      const params = { consumerId: this.consumerId, _id: this.orderId }
-      getOrderBySkuId(params).then(res => {
+      getOrderByShopCar(this.queryList).then(res => {
         this.tableData = res.data
-        this.skuData = res.data.sku.goodsId
-        this.goodsPrice = res.data.sku.goodsId.integral
-        this.userInfo = res.data.consumer
-        this.address = res.data.addressId
-        this.amount = res.data.amount
       })
     },
-    onSubmit() {
-      const params = {
-        _id: this.tableData._id
-      }
-      order(params).then(res => {
-        if (res.code === 200) {
-          Toast({
-            type: 'success',
-            message: '购买成功',
-            onOpened: () => {
-              this.$router.replace('/my')
-            }
-          })
+    handleOnSubmit() {
+      const params = this.tableData.map((item, index) => {
+        return {
+          amount: this.queryList[index].amount,
+          sku: item.skuId._id,
+          id: item._id,
+          consumer: this.userInfo.consumerId._id
         }
       })
-      console.log(order)
+      this.handleOrder(params)
+    },
+    // 购物车下单
+    handleOrder(data) {
+      orderCar(data).then(res => {
+        const that = this
+        Toast({
+          message: '购买成功',
+          type: 'success',
+          duration: 1000,
+          onClose: () => {
+            data.forEach(item => {
+              this.$store.commit('REMOVE_SHOP_CAR', data._id)
+            })
+            that.$router.push('/shoppingCar')
+          }
+        })
+      })
+    },
+    getRevecer() {
+      getList().then(res => {
+        this.userInfo = res.data.filter(item => item.isDefault === true)[0]
+        console.log(this.userInfo)
+      })
+    },
+    countPrice(amount, goodsPrice) {
+      const price = amount * goodsPrice
+      return price
     }
   }
 }
@@ -120,7 +135,9 @@ export default {
 }
 .container{
     padding-top: 92px;
-    background: #ccc
+    padding-bottom: 100px;
+    background: #ccc;
+    min-height: calc(100vh - 192px)
 }
 .banner {
     background: white

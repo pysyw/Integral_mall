@@ -15,6 +15,15 @@ export function getOrderBySkuId(params) {
     params
   })
 }
+
+// 根据购物车商品id查找订单
+export function getOrderByShopCar(params) {
+  return request({
+    url: '/order/getOrderByShopCar',
+    method: 'get',
+    params
+  })
+}
 // 商品详情里下单
 export function order(data) {
   return request({
