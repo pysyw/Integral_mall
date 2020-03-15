@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 import { getShoppingCar, setShoppingCar, removeShoppingCar, setToken, getToken, removeToken, getConsumerId, setConsumerId, removeConsumerId } from '@/utils/auth.js'
-import { login } from '@/api/user'
+import { login, logout } from '@/api/user'
 export default new Vuex.Store({
   state: {
     // 用户id
@@ -31,6 +31,9 @@ export default new Vuex.Store({
       const index = state.shoppingCar.indexOf(data)
       state.shoppingCar.splice(index, 1)
       setShoppingCar(state.shoppingCar)
+    },
+    REMOVE_ALL_SHOP_CAR(state) {
+      state.shoppingCar = []
     },
     SET_USERId(state, data) {
       state.consumerId = data
@@ -68,12 +71,15 @@ export default new Vuex.Store({
     },
     handleLogout(context) {
       return new Promise(resolve => {
-        context.commit('SET_USERId', '')
-        context.commit('SET_TOKEN', '')
-        removeToken()
-        removeConsumerId()
-        context.commit('SET_USERINFO', '')
-        removeShoppingCar()
+        logout().then(res => {
+          context.commit('SET_USERId', '')
+          context.commit('SET_TOKEN', '')
+          removeToken()
+          removeConsumerId()
+          context.commit('SET_USERINFO', '')
+          context.commit('REMOVE_ALL_SHOP_CAR')
+          removeShoppingCar()
+        })
         resolve()
       })
     },

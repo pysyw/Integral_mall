@@ -64,7 +64,7 @@
           </van-cell-group>
         </div>
       </div>
-      <van-button v-if="token" round @click="logout">退出登录</van-button>
+      <van-button v-if="userData" round @click="logout">退出登录</van-button>
       <van-button v-else round style="width:100%" @click="login">登录</van-button>
     </div>
   </div>
@@ -77,7 +77,7 @@ export default {
   name: 'My',
   data() {
     return {
-      userData: {},
+      userData: '',
       orderList: [
         {
           name: '未付款',
@@ -94,7 +94,8 @@ export default {
           status: '',
           id: 2
         }
-      ]
+      ],
+      status: 0 // 0:未登录， 1：以登录
     }
   },
   computed: {
@@ -109,7 +110,7 @@ export default {
     }
   },
   mounted() {
-    if (this.token && this.consumerId) {
+    if (this.token) {
       this.getConsumerInfo()
     }
   },
@@ -124,6 +125,7 @@ export default {
         title: '提示',
         message: '您真的要退出登录嘛'
       }).then(() => {
+        this.userData = ''
         store.dispatch('handleLogout')
       }).catch(() => {
         return

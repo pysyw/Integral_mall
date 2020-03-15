@@ -118,13 +118,9 @@ export default {
       }
     },
     showSuk(sku, goods) {
-      if (sku.tree.length !== 0) {
-        this.show = true
-        this.sku = sku
-        this.goods = goods
-      } else {
-        return
-      }
+      this.show = true
+      this.sku = sku
+      this.goods = goods
     }
   }
 }

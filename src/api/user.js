@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function logout() {
+  return request({
+    url: '/consumer/logout',
+    method: 'post'
+  })
+}
+
 export function register(data) {
   return request({
     url: '/consumer/register',
