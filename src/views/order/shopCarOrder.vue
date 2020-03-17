@@ -8,12 +8,13 @@
       <div class="iconWrap">
         <svg-icon icon-class="test" />
       </div>
-      <div class="descWrap">
+      <div class="descWrap" @click="showPop(userInfo._id)">
         <div class="info">{{ userInfo.name }} <span class="phone mg-left-20">{{ userInfo.phoneNumber }}</span></div>
         <div class="detail">
           {{ userInfo.addressDetail }}
         </div>
       </div>
+      <i class="van-icon van-icon-arrow van-cell__right-icon" />
     </div>
     <div class="goddsWrap mg-tp-20">
       <div v-for="(item, index) in tableData" :key="index">
@@ -38,6 +39,7 @@
       button-text="提交订单"
       @submit="handleOnSubmit"
     />
+    <v-popoup ref="popup" @handleSelectAddress="handleSelectAddress" />
   </div>
 </template>
 <script>
@@ -45,10 +47,12 @@ import { Toast } from 'vant'
 import navBar from '@/components/navBar'
 import { getOrderByShopCar, orderCar } from '@/api/order'
 import { getList } from '@/api/address'
+import VPopoup from '@/components/popup'
 export default {
   name: 'Order',
   components: {
-    navBar
+    navBar,
+    VPopoup
   },
   data() {
     return {
@@ -92,9 +96,11 @@ export default {
       const params = this.tableData.map((item, index) => {
         return {
           amount: this.queryList[index].amount,
+          goodsId: item.skuId.goodsId._id,
           sku: item.skuId._id,
           id: item._id,
-          consumer: this.userInfo.consumerId._id
+          consumer: this.userInfo.consumerId._id,
+          address: this.userInfo._id
         }
       })
       this.handleOrder(params)
@@ -119,12 +125,20 @@ export default {
     getRevecer() {
       getList().then(res => {
         this.userInfo = res.data.filter(item => item.isDefault === true)[0]
-        console.log(this.userInfo)
       })
     },
     countPrice(amount, goodsPrice) {
       const price = amount * goodsPrice
       return price
+    },
+    showPop(addressId) {
+      this.$refs.popup.showPop(addressId)
+    },
+    handleSelectAddress(data) {
+      this.userInfo._id = data.id
+      this.userInfo.name = data.name
+      this.userInfo.addressDetail = data.address
+      this.userInfo.isDefault = data.isDefault
     }
   }
 }
@@ -154,6 +168,7 @@ export default {
         }
     }
     .descWrap{
+        flex:1;
         margin-left: 20px;
         line-height: 1.6;
         .info{

@@ -9,7 +9,7 @@ directory：说明需要检索的目录
 useSubdirectories：是否检索子目录
 regExp: 匹配文件的正则表达式
  */
-//全局注册
+//  全局注册
 Vue.component('svg-icon', SvgIcon)
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)

@@ -1,8 +1,8 @@
 import request from '@/utils/request.js'
 
-export function getList(userId) {
+export function getList() {
   return request({
-    url: `/address/getAddress?consumerId=${userId}`,
+    url: `/address/getAddress`,
     method: 'get'
   })
 }
