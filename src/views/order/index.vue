@@ -8,12 +8,19 @@
       <div class="iconWrap">
         <svg-icon icon-class="test" />
       </div>
-      <div class="descWrap">
+      <div v-if="tableData.status !== 0" class="descWrap">
         <div class="info">{{ address.name }} <span class="phone mg-left-20">{{ address.phoneNumber }}</span></div>
         <div class="detail">
           {{ address.addressDetail }}
         </div>
       </div>
+      <div v-else class="descWrap" @click="showPop(address._id)">
+        <div class="info">{{ address.name }} <span class="phone mg-left-20">{{ address.phoneNumber }}</span></div>
+        <div class="detail">
+          {{ address.addressDetail }}
+        </div>
+      </div>
+      <i v-if="tableData.status === 0" class="van-icon van-icon-arrow van-cell__right-icon" />
     </div>
     <div class="goddsWrap mg-tp-20">
       <van-card
@@ -43,17 +50,20 @@
       :price="totalPrice * 100"
       button-text="已付款"
     />
+    <v-popoup ref="popup" @handleSelectAddress="handleSelectAddress" />
   </div>
 </template>
 <script>
 import { Toast } from 'vant'
 import navBar from '@/components/navBar'
 import store from '@/store'
+import VPopoup from '@/components/popup'
 import { getOrderBySkuId, order } from '@/api/order'
 export default {
   name: 'Order',
   components: {
-    navBar
+    navBar,
+    VPopoup
   },
   data() {
     return {
@@ -96,7 +106,14 @@ export default {
     },
     onSubmit() {
       const params = {
-        _id: this.tableData._id
+        _id: this.tableData._id,
+        amount: this.amount,
+        consumerIntegral: this.userInfo.nowIntegral,
+        addressId: this.address._id,
+        goodsId: this.tableData.goodsName,
+        category: this.tableData.category,
+        totalPrice: this.totalPrice,
+        quantity: this.skuData.quantity
       }
       order(params).then(res => {
         if (res.code === 200) {
@@ -110,6 +127,15 @@ export default {
         }
       })
       console.log(order)
+    },
+    showPop(addressId) {
+      this.$refs.popup.showPop(addressId)
+    },
+    handleSelectAddress(data) {
+      this.address._id = data.id
+      this.address.name = data.name
+      this.address.addressDetail = data.address
+      this.address.isDefault = data.isDefault
     }
   }
 }
@@ -137,6 +163,7 @@ export default {
         }
     }
     .descWrap{
+        flex: 1;
         margin-left: 20px;
         line-height: 1.6;
         .info{

@@ -100,7 +100,9 @@ export default {
           sku: item.skuId._id,
           id: item._id,
           consumer: this.userInfo.consumerId._id,
-          address: this.userInfo._id
+          address: this.userInfo._id,
+          totalPrice: this.totalPrice,
+          preIntegral: this.userInfo.consumerId.nowIntegral
         }
       })
       this.handleOrder(params)
