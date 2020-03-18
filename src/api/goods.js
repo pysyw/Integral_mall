@@ -8,9 +8,10 @@ export function getGoodsDetail(id) {
 }
 
 // 根据分类Id获取商品
-export function getGoodsByCategoryId(id) {
+export function getGoodsByCategoryId(params) {
   return request({
-    url: `/goods/getGoods?categoryId=${id}`,
-    method: 'get'
+    url: `/goods/getGoods`,
+    method: 'get',
+    params
   })
 }

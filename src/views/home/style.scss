@@ -62,14 +62,27 @@
         }
     }
     .advertise{
-        height: auto
+        height: auto;
+        position: sticky;
+        top: 0;
     }
     .goodsWrap{
         padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        max-height: 100vh;
+        overflow-y: scroll;
         .goodsItem{
+            box-sizing: border-box;
+            width: 50%;
             padding: 10px;
             .goodsPicWrap {
-                max-width: 200px;
+                width: 200px;
+                min-height: 200px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }

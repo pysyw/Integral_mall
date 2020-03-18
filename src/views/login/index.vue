@@ -40,14 +40,21 @@
 </template>
 <script>
 import store from '@/store'
+import { getCode } from '@/api/home'
 import { Toast } from 'vant'
 export default {
   name: 'Login',
   data() {
     return {
       phoneNumber: '',
-      password: ''
+      password: '',
+      code: ''
     }
+  },
+  mounted() {
+    getCode().then(res => {
+      this.code = res.data
+    })
   },
   methods: {
     onSubmit(loginForm) {

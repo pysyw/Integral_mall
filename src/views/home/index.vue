@@ -1,5 +1,5 @@
 <template>
-  <div class="home tabHeight">
+  <div ref="contanier" class="home tabHeight">
     <div class="swipeWrap">
       <van-swipe height="200" class="my-swipe" :autoplay="3000" indicator-color="white">
         <van-swipe-item v-for="(item, index) in images" :key="index">
@@ -97,18 +97,20 @@
     <div class="advertise">
       <img src="../../assets/img/4.jpg" class="img-responsive">
     </div>
-    <div class="goodsWrap">
-      <van-row>
-        <van-col v-for="(item, index) in goods" :key="index" span="12">
-          <div class="flex-column-center goodsItem" @click="goto('goodsDetail', item._id)">
-            <div class="goodsPicWrap">
-              <img :src="item.picture" class="img-responsive">
-            </div>
-            <p class="goodsName">{{ item.goodsName }}</p>
-            <span>￥{{ item.integral }}</span>
+    <div class="goodsWrap" @scroll.passive="scrollEvent">
+      <div v-for="(item, index) in goods" :key="index" class="goodsItem">
+        <div class="flex-column-center" @click="goto('goodsDetail', item._id)">
+          <div class="goodsPicWrap">
+            <img :src="item.picture" class="img-responsive">
           </div>
-        </van-col>
-      </van-row>
+          <p class="goodsName">{{ item.goodsName }}</p>
+          <span>￥{{ item.integral }}</span>
+        </div>
+      </div>
+      <div v-if="loading" style="width:100%" class="flex-center">
+        <van-loading size="24px">加载中...</van-loading>
+      </div>
+      <div v-if="finished" style="width:100%" class="flex-center">没有更多了~~</div>
     </div>
   </div>
 </template>
@@ -129,7 +131,14 @@ export default {
       images: [],
       goods: [],
       priceSpikeGoods: [],
-      categoryArr: []
+      total: 0,
+      categoryArr: [],
+      loading: false,
+      finished: false,
+      queryList: {
+        pageSize: 10,
+        pageNum: 1
+      }
     }
   },
   mounted() {
@@ -138,16 +147,33 @@ export default {
   },
   methods: {
     getPageData() {
-      getData().then(res => {
+      getData(this.queryList).then(res => {
         const data = res.data
         this.images = data.swipeArr
         this.goods = data.goods
         this.priceSpikeGoods = data.priceSpike
         this.categoryArr = data.category
+        this.total = data.total
       })
     },
     goto(url, id) {
       this.$router.push(`/${url}/${id}`)
+    },
+    scrollEvent(e) {
+      const scrollBottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight
+      if (this.goods.length === this.total) {
+        this.loading = false
+        this.finished = true
+        return
+      }
+      if (scrollBottom === 0) {
+        this.loading = true
+        this.queryList.pageNum += 1
+        getData(this.queryList).then(res => {
+          this.goods = this.goods.concat(res.data.goods)
+          this.loading = false
+        })
+      }
     }
   }
 }
