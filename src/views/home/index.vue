@@ -12,25 +12,25 @@
         <van-col span="6">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
-            <p>商品分类</p>
+            <p>质量保证</p>
           </div>
         </van-col>
         <van-col span="6">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
-            <p>今日特价</p>
+            <p>日内发货</p>
           </div>
         </van-col>
         <van-col span="6">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
-            <p>领卷中心</p>
+            <p>福利大众</p>
           </div>
         </van-col>
         <van-col span="6">
           <div class="flex-column-center">
             <svg-icon icon-class="test" />
-            <p>充值</p>
+            <p>价廉物美</p>
           </div>
         </van-col>
       </van-row>
