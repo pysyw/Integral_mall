@@ -1,14 +1,17 @@
 <template>
   <div>
     <div class="container">
+      <nav-bar
+        font-size="16px"
+        title=""
+        font-color="#fff"
+        background-color="transparent"
+        right-text="注册"
+        @onClickRight="goto('/register')"
+      />
       <div class="loginWrap">
         <div class="logoWrap">
-          <van-image
-            round
-            width="1.8rem"
-            height="1.8rem"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
-          />
+          <div style="fontSize:35px;fontWeight:500;color:#fff">LOGIN</div>
           <div class="formWrap flex-column-center">
             <van-form @submit="onSubmit">
               <van-field
@@ -40,10 +43,14 @@
 </template>
 <script>
 import store from '@/store'
+import navBar from '@/components/navBar'
 import { getCode } from '@/api/home'
 import { Toast } from 'vant'
 export default {
   name: 'Login',
+  components: {
+    navBar
+  },
   data() {
     return {
       phoneNumber: '',
@@ -68,6 +75,9 @@ export default {
           }
         })
       })
+    },
+    goto(url) {
+      this.$router.push(url)
     }
   }
 }
