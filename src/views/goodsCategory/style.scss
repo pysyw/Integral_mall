@@ -6,8 +6,6 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        max-height: calc(100vh - 92px);
-        overflow-y: scroll;
         .goodsItem{
             box-sizing: border-box;
             width: 50%;

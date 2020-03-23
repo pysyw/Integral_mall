@@ -63,16 +63,16 @@
     }
     .advertise{
         height: auto;
-        position: sticky;
-        top: 0;
+        // position: sticky;
+        // top: 0;
     }
     .goodsWrap{
         padding: 20px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        max-height: 100vh;
-        overflow-y: scroll;
+        // max-height: 100vh;
+        // overflow-y: scroll;
         .goodsItem{
             box-sizing: border-box;
             width: 50%;
