@@ -67,14 +67,6 @@
       <van-button v-if="userData" round @click="logout">退出登录</van-button>
       <van-button v-else round style="width:100%" @click="login">登录</van-button>
     </div>
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <van-cell v-for="item in list" :key="item" :title="item" />
-    </van-list>
   </div>
 </template>
 <script>
