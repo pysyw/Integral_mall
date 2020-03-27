@@ -19,7 +19,7 @@
                 name="phoneNumber"
                 label="手机号"
                 placeholder="请输入手机号"
-                :rules="[{ required: true, message: '请填写手机号' }]"
+                :rules="[{ validator,required: true, message: '请填写正确的手机格式' }]"
               />
               <van-field
                 v-model="password"
@@ -27,7 +27,7 @@
                 name="password"
                 label="密码"
                 placeholder="请输入密码"
-                :rules="[{ required: true, message: '请填写密码' }]"
+                :rules="[{ required: true,message:'请填写密码' }]"
               />
               <div style="margin: 16px;">
                 <van-button round block type="info" native-type="submit">
@@ -78,6 +78,9 @@ export default {
     },
     goto(url) {
       this.$router.push(url)
+    },
+    validator(val) {
+      return /^1[3456789]\d{9}$/.test(val)
     }
   }
 }

@@ -9,6 +9,15 @@
       :immediate-check="false"
       @load="getPageData"
     >
+      <div class="searchWrap">
+        <div class="search" @click="goto('search')">
+          <div style="display: flex;align-items: center;marginLeft:10px">
+            <van-icon name="search" size="20" />
+            <span>请搜索您心思思的商品</span>
+          </div>
+          <van-button class="searchBtn" size="small" round>搜索</van-button>
+        </div>
+      </div>
       <div class="swipeWrap">
         <van-swipe height="200" class="my-swipe" :autoplay="3000" indicator-color="white">
           <van-swipe-item v-for="(item, index) in images" :key="index">
@@ -175,7 +184,11 @@ export default {
       })
     },
     goto(url, id) {
-      this.$router.push(`/${url}/${id}`)
+      if (!id) {
+        this.$router.push(`/${url}`)
+      } else {
+        this.$router.push(`/${url}/${id}`)
+      }
     }
     // scrollEvent(e) {
     //   const scrollBottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight

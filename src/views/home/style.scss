@@ -1,5 +1,24 @@
 @import '../../style/variable.scss';
 .home{
+    .searchWrap{
+        padding: 10px 150px 10px 60px;
+        box-sizing:border-box;
+        .search {
+            border: 1px solid $theme;
+            border-radius: 60px;
+            box-sizing:border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            .searchBtn{
+                transform:translateX(30%);
+            }
+            .van-button--default{
+                border: 1px solid $theme;
+            }
+        }
+    }
     .swipeWrap{
         
     }
