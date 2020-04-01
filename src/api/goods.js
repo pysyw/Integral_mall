@@ -15,3 +15,11 @@ export function getGoodsByCategoryId(params) {
     params
   })
 }
+
+export function searchGoods(params) {
+  return request({
+    url: '/goods/searchGoods',
+    method: 'get',
+    params
+  })
+}

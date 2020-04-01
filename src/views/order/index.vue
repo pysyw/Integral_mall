@@ -6,7 +6,7 @@
     </div>
     <div class="addressWrap">
       <div class="iconWrap">
-        <svg-icon icon-class="test" />
+        <svg-icon icon-class="express" />
       </div>
       <div v-if="tableData.status !== 0" class="descWrap">
         <div class="info">{{ address.name }} <span class="phone mg-left-20">{{ address.phoneNumber }}</span></div>

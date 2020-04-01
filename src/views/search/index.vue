@@ -9,7 +9,7 @@
       <template #title>
         <div>
           <van-field
-            v-model="queryList.name"
+            v-model="queryList.goodsName"
             placeholder="请输入商品名称"
           />
         </div>
@@ -19,23 +19,46 @@
       </template>
     </van-nav-bar>
     <div class="goodsWrap">
-      111
+      <div v-for="(item, index) in goods" :key="index" class="goodsItem" @click="goto('goodsDetail', item._id)">
+        <div class="goodsPicWrap">
+          <img class="fullWidth" :src="item.picture">
+        </div>
+        <div class="goodsInfoWrap">
+          <div class="descripteWrap">
+            <span class="goodsName">{{ item.goodsName }}</span>
+            <p class="desc">{{ item.goodsDetail }}</p>
+            <span class="price"> 积分:<span class="number">{{ item.integral }}</span></span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { searchGoods } from '@/api/goods'
 export default {
   name: 'Search',
   data() {
     return {
       queryList: {
-        name: ''
-      }
+        goodsName: ''
+      },
+      goods: []
     }
   },
   methods: {
+    handleSearch() {
+      searchGoods(this.queryList).then(res => {
+        if (res.code === 200) {
+          this.goods = res.data
+        }
+      })
+    },
+    goto(url, id) {
+      this.$router.push(`/${url}/${id}`)
+    },
     onClickRight() {
-      console.log('right')
+      this.handleSearch()
     },
     onClickLeft() {
       this.$router.go(-1)
@@ -57,22 +80,59 @@ export default {
     padding: 20px 0;
   }
   .goodsWrap{
-        padding: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
         // max-height: 100vh;
         // overflow-y: scroll;
         .goodsItem{
+            display: flex;
             box-sizing: border-box;
-            width: 50%;
-            padding: 10px;
+            max-height: 250px;
+            padding:20px 20px;
+            position: relative;
+            &::after {
+              position: absolute;
+              box-sizing: border-box;
+              content: ' ';
+              pointer-events: none;
+              right: 0;
+              bottom: 0;
+              left: 16px;
+              border-bottom: 1px solid #ebedf0;
+              -webkit-transform: scaleY(0.5);
+              transform: scaleY(0.5);
+            }
             .goodsPicWrap {
-                width: 200px;
-                min-height: 200px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+              width: 196px;
+              max-height: 196px;
+            }
+            .goodsInfoWrap {
+              width:100%;
+              display: flex;
+              align-items: center;
+              .descripteWrap{
+                padding: 10px;
+                .goodsName{
+                  font-size:30px
+                }
+                .desc {
+                  font-size: 18px;
+                  margin: 5px 0;
+                  color:#999;
+                  text-overflow: -o-ellipsis-lastline;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                }
+                .price{
+                  color: red;
+                  .number{
+                    font-size: 32px;
+                  }
+                }
+              }
+
             }
         }
     }

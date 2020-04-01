@@ -6,7 +6,7 @@
     </div>
     <div class="addressWrap">
       <div class="iconWrap">
-        <svg-icon icon-class="test" />
+        <svg-icon icon-class="express" />
       </div>
       <div class="descWrap" @click="showPop(userInfo._id)">
         <div class="info">{{ userInfo.name }} <span class="phone mg-left-20">{{ userInfo.phoneNumber }}</span></div>

@@ -29,25 +29,25 @@
         <van-row>
           <van-col span="6">
             <div class="flex-column-center">
-              <svg-icon icon-class="test" />
+              <svg-icon icon-class="zhiliang" />
               <p>质量保证</p>
             </div>
           </van-col>
           <van-col span="6">
             <div class="flex-column-center">
-              <svg-icon icon-class="test" />
+              <svg-icon icon-class="fahuo" />
               <p>日内发货</p>
             </div>
           </van-col>
           <van-col span="6">
             <div class="flex-column-center">
-              <svg-icon icon-class="test" />
+              <svg-icon icon-class="dazhong" />
               <p>福利大众</p>
             </div>
           </van-col>
           <van-col span="6">
             <div class="flex-column-center">
-              <svg-icon icon-class="test" />
+              <svg-icon icon-class="wumeijialian" />
               <p>价廉物美</p>
             </div>
           </van-col>

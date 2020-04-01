@@ -32,7 +32,7 @@
               class="flex-column-center"
               @click="$router.push(`/orderList/${item.status}`)"
             >
-              <svg-icon icon-class="test" />
+              <svg-icon :icon-class="item.icon" />
               <p>{{ item.name }}</p>
             </van-col>
           </van-row>
@@ -80,18 +80,21 @@ export default {
       userData: '',
       orderList: [
         {
-          name: '未付款',
+          name: '未付订单',
           status: 0,
+          icon: 'nopay',
           id: 0
         },
         {
-          name: '已付款',
+          name: '已付订单',
           status: 1,
+          icon: 'paied',
           id: 1
         },
         {
           name: '所有订单',
           status: '',
+          icon: 'order',
           id: 2
         }
       ],
