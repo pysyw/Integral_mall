@@ -76,7 +76,7 @@
                 <img :src="item.logo">
               </div>
               <div class="introWrap ">
-                <span>{{ item.categoryName }}</span>
+                <p>{{ item.categoryName }}</p>
                 <van-button round size="small" @click="goto('goodsCategory',item._id)">点击进入</van-button>
               </div>
             </div>

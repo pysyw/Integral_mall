@@ -26,19 +26,19 @@
       <van-row class="mg-tp-30">
         <van-col span="8">
           <div class="flex-column-center">
-            <svg-icon icon-class="test" />
+            <svg-icon style="width:0.7rem;height:0.7rem" icon-class="kuaidi" />
             {{ pageData.expressWay }}快递
           </div>
         </van-col>
         <van-col span="8">
           <div class="flex-column-center">
-            <svg-icon icon-class="test" />
+            <svg-icon style="width:0.7rem;height:0.7rem" icon-class="yunfei" />
             快递费{{ pageData.expressCost }}元
           </div>
         </van-col>
         <van-col span="8">
           <div class="flex-column-center">
-            <svg-icon icon-class="test" />
+            <svg-icon style="width:0.7rem;height:0.7rem" icon-class="anshi" />
             72小时内发货
           </div>
         </van-col>

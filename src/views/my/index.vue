@@ -3,12 +3,11 @@
     <div class="topWrap">
       <div class="userBar">
         <div class="avatar">
-          <van-image round width="2rem" height="2rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+          <van-image round width="2rem" height="2rem" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80" />
         </div>
         <div v-if="token" class="info">
           <div class="userName">
             <span>{{ userData. name }}</span>
-            <svg-icon icon-class="test" />
           </div>
           <div class="Id">
             Id:{{ userData._id }}
