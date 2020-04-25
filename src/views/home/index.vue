@@ -56,21 +56,6 @@
       <div class="categoryWrap">
         <van-row gutter="20">
           <van-col v-for="(item,index) in categoryArr" :key="index" span="12">
-            <!-- <van-row>
-            <van-col span="12">
-              <div class="categoryItem">
-                <div class="categoryLogo">
-                  <img :src="item.logo">
-                </div>
-              </div>
-            </van-col>
-            <van-col span="12">
-              <div class="introWrap ">
-                <span>{{ item.categoryName }}</span>
-                <van-button round size="small">点击进入</van-button>
-              </div>
-            </van-col>
-          </van-row> -->
             <div class="categoryItem">
               <div class="categoryLogo">
                 <img :src="item.logo">
@@ -131,7 +116,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import CountDown from '@/components/countdown'
 import { getData } from '@/api/home.js'
 
@@ -190,22 +174,6 @@ export default {
         this.$router.push(`/${url}/${id}`)
       }
     }
-    // scrollEvent(e) {
-    //   const scrollBottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight
-    //   if (this.goods.length === this.total) {
-    //     this.loading = false
-    //     this.finished = true
-    //     return
-    //   }
-    //   if (scrollBottom === 0) {
-    //     this.loading = true
-    //     this.queryList.pageNum += 1
-    //     getData(this.queryList).then(res => {
-    //       this.goods = this.goods.concat(res.data.goods)
-    //       this.loading = false
-    //     })
-    //   }
-    // }
   }
 }
 </script>

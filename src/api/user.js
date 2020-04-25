@@ -15,6 +15,14 @@ export function logout() {
   })
 }
 
+export function editPwd(data) {
+  return request({
+    url: '/consumer/edit',
+    method: 'post',
+    data
+  })
+}
+
 export function register(data) {
   return request({
     url: '/consumer/register',

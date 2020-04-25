@@ -57,26 +57,66 @@
         <div>
           <van-cell-group>
             <van-cell title="收获地址" is-link to="/address" />
-            <van-cell title="修改登录密码" is-link />
-            <van-cell title="常见问题" is-link />
-            <van-cell title="关于我们" is-link />
+            <van-cell title="修改登录密码" is-link @click="showOverLay('pwd')" />
+            <van-cell title="常见问题" is-link @click="showOverLay('question')" />
+            <van-cell title="关于我们" is-link @click="showOverLay('aboutUs')" />
           </van-cell-group>
         </div>
       </div>
       <van-button v-if="userData" round @click="logout">退出登录</van-button>
       <van-button v-else round style="width:100%" @click="login">登录</van-button>
     </div>
+    <van-overlay :show="show" z-index="999" @click.stop="show = false">
+      <div class="wrapper">
+        <div v-if="tag === 'pwd'" class="formWrap" @click.stop>
+          <div class="content">
+            <div class="title">修改密码</div>
+            <van-form @submit="changePwd">
+              <van-field
+                v-model="password"
+                style="padding:20px"
+                placeholder="请输入要更改的密码"
+                required
+                type="password"
+                label="密码"
+                :rules="[{ required: true, message: '请填写密码' }]"
+              />
+              <div class="btnWrap">
+                <van-button type="info" style="width:100%" round >提交</van-button>
+              </div>
+            </van-form>
+          </div>
+
+        </div>
+        <div v-else-if="tag=== 'question'" class="contentWrap">
+          <div class="title">常见问题</div>
+          <div class="text">
+            如果需要有任何疑问，请找商城管理员咨询咨询
+          </div>
+        </div>
+        <div v-else-if="tag=== 'aboutUs'" class="contentWrap">
+          <div class="title">关于我们</div>
+          <div class="text">
+            积分商城持着客户至上的原则来服务
+          </div>
+        </div>
+        <van-icon class="close" color="#fff" size="30px" name="cross" />
+      </div>
+    </van-overlay>
   </div>
 </template>
 <script>
-import { getInfo } from '@/api/user'
-import { Dialog } from 'vant'
+import { getInfo, editPwd } from '@/api/user'
+import { Dialog, Toast } from 'vant'
 import store from '@/store'
 export default {
   name: 'My',
   data() {
     return {
+      tag: '',
       userData: '',
+      password: '',
+      show: false,
       orderList: [
         {
           name: '未付订单',
@@ -117,6 +157,10 @@ export default {
     }
   },
   methods: {
+    showOverLay(option) {
+      this.tag = option
+      this.show = true
+    },
     getConsumerInfo() {
       getInfo(this.consumerId).then(res => {
         this.userData = res.data
@@ -135,10 +179,66 @@ export default {
     },
     login() {
       this.$router.push('/login')
+    },
+    changePwd() {
+      editPwd({ password: this.password }).then(res => {
+        if (res.code === 200) {
+          this.show = false
+          this.tag = ''
+          this.password = ''
+          Toast.success({
+            message: res.message
+          })
+        }
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 @import './style.scss';
+::v-deep .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    .formWrap{
+      width: 80%;
+      .content{
+        padding:20px 0 30px 0;
+        .title{
+          font-size:32px;
+          padding: 20px;
+           background: #fff;
+          color: #409EFF
+        }
+        .van-field__label{
+          width: 90px
+        }
+      }
+      .btnWrap {
+        margin-top:60px
+      }
+    }
+    .contentWrap{
+      background:#fff;
+      width:80%;
+      .title{
+          font-size:32px;
+          padding: 20px;
+          color: #409EFF
+      }
+      .text{
+        height: 300px;
+        font-size: 32px;
+        padding: 20px;
+      }
+    }
+    .close{
+      border:1px solid #fff;
+      margin-top:30px;
+      border-radius: 50%
+    }
+  }
 </style>
